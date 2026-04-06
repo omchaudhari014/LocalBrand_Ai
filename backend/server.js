@@ -25,7 +25,7 @@ try {
   console.warn("Groq initialization failed. Make sure to set GROQ_API_KEY.");
 }
 
-app.post('/generate', async (req, res) => {
+app.post('/api/generate', async (req, res) => {
   try {
     const { businessType, offer, language } = req.body;
 
