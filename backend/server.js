@@ -47,6 +47,9 @@ app.post('/api/generate', async (req, res) => {
 
     const caption = chatCompletion.choices[0]?.message?.content || "Caption generation failed.";
 
+    // Truncate for Google TTS (max ~200 chars)
+    const shortCaption = caption.length > 180 ? caption.substring(0, 180).trim() + '...' : caption;
+
     // Call Google TTS
     // google-tts-api generates a URL to the spoken text
     // The language param should ideally be a valid lang code (en, hi, etc.)
@@ -57,7 +60,7 @@ app.post('/api/generate', async (req, res) => {
     else if (language.toLowerCase().includes('telugu')) langCode = 'te';
     else if (language.toLowerCase().includes('marathi')) langCode = 'mr';
 
-    const audioUrl = googleTTS.getAudioUrl(caption, {
+    const audioUrl = googleTTS.getAudioUrl(shortCaption, {
       lang: langCode,
       slow: false,
       host: 'https://translate.google.com',
